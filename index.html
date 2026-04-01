@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Your Birthday Surprise | April 26 ❤️</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -27,6 +27,7 @@
             overflow: hidden;
             margin: 0;
             position: relative;
+            touch-action: manipulation;
         }
 
         /* Animated Background Layer */
@@ -74,16 +75,16 @@
 
         @keyframes fly {
             0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(100px, -50px) rotate(15deg); }
-            50% { transform: translate(200px, 0px) rotate(-10deg); }
-            75% { transform: translate(100px, 50px) rotate(5deg); }
+            25% { transform: translate(50px, -25px) rotate(15deg); }
+            50% { transform: translate(100px, 0px) rotate(-10deg); }
+            75% { transform: translate(50px, 25px) rotate(5deg); }
             100% { transform: translate(0, 0) rotate(0deg); }
         }
 
         /* Drifting Gifts */
         .drifting-gift {
             position: absolute;
-            font-size: 24px;
+            font-size: 20px;
             opacity: 0.2;
             pointer-events: none;
             animation: drift var(--dur) infinite linear;
@@ -95,23 +96,25 @@
         }
 
         .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .gift-container {
             position: relative;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             user-select: none;
             z-index: 50;
             display: inline-block;
+            will-change: transform;
         }
 
         .gift-box {
-            font-size: clamp(80px, 20vw, 120px);
-            filter: drop-shadow(0 0 30px rgba(167, 139, 250, 0.3));
+            font-size: clamp(70px, 18vw, 110px);
+            filter: drop-shadow(0 0 25px rgba(167, 139, 250, 0.4));
             transition: transform 0.1s ease;
         }
 
@@ -121,9 +124,8 @@
 
         @keyframes appear-wish {
             0% { transform: scale(0) rotate(-10deg); opacity: 0; }
-            10% { transform: scale(1.1) rotate(var(--rot)); opacity: 1; }
-            20% { transform: scale(1) rotate(var(--rot)); opacity: 1; }
-            80% { transform: scale(1) rotate(var(--rot)); opacity: 1; }
+            15% { transform: scale(1.1) rotate(var(--rot)); opacity: 1; }
+            85% { transform: scale(1) rotate(var(--rot)); opacity: 1; }
             100% { transform: scale(0.8) rotate(var(--rot)); opacity: 0; }
         }
 
@@ -131,12 +133,12 @@
             position: absolute;
             pointer-events: none;
             font-family: 'Dancing Script', cursive;
-            font-size: 1.4rem;
+            font-size: 1.1rem;
             white-space: nowrap;
             color: var(--accent-pink);
-            text-shadow: 0 0 15px rgba(244, 114, 182, 0.6);
+            text-shadow: 0 0 12px rgba(244, 114, 182, 0.7);
             z-index: 5;
-            animation: appear-wish 5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: appear-wish 4s ease-out forwards;
         }
 
         .gradient-text {
@@ -159,7 +161,7 @@
         }
 
         #wishes-layer {
-            position: absolute;
+            position: fixed;
             inset: 0;
             pointer-events: none;
             overflow: hidden;
@@ -167,16 +169,12 @@
         }
 
         .birthday-card {
-            animation: slideUp 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+            animation: slideUp 1s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         @keyframes slideUp {
-            0% { transform: translateY(50px); opacity: 0; }
+            0% { transform: translateY(30px); opacity: 0; }
             100% { transform: translateY(0); opacity: 1; }
-        }
-        
-        #main-container {
-            transition: all 0.5s ease;
         }
     </style>
 </head>
@@ -189,54 +187,54 @@
     <div id="background-elements"></div>
     <div id="wishes-layer"></div>
 
-    <div id="main-container" class="text-center px-4 w-full max-w-lg relative z-10">
-        <div id="date-header" class="mb-6">
-            <h2 id="today-date" class="text-xl font-bold text-purple-300 opacity-80 uppercase tracking-widest">Loading...</h2>
+    <div id="main-container" class="text-center px-6 w-full max-w-md relative z-10">
+        <div id="date-header" class="mb-4">
+            <h2 id="today-date" class="text-sm font-bold text-purple-300 opacity-70 uppercase tracking-[0.2em]">Loading...</h2>
         </div>
 
         <div id="main-interaction">
-            <h1 id="tap-instruction" class="text-3xl md:text-4xl font-black mb-12 leading-tight transition-opacity duration-500">
+            <h1 id="tap-instruction" class="text-2xl md:text-3xl font-black mb-8 leading-tight transition-opacity duration-500">
                 Tap to open <br><span class="gradient-text italic">Your Surprise</span>
             </h1>
 
-            <div id="gift-wrapper" class="relative py-20">
+            <div id="gift-wrapper" class="relative py-12 flex justify-center items-center min-h-[300px]">
                 <div id="movable-gift" class="gift-container" onclick="handleTap(event)">
                     <div id="gift-visual" class="gift-box">🎁</div>
                 </div>
             </div>
 
-            <p id="sub-instruction" class="text-gray-400 animate-pulse transition-opacity duration-500">Every tap fills the screen with love... ✨</p>
+            <p id="sub-instruction" class="text-sm text-gray-400 animate-pulse transition-opacity duration-500">Every tap fills the screen with love... ✨</p>
         </div>
 
-        <div id="birthday-reveal" class="hidden birthday-card">
-            <div class="text-7xl mb-6 animate-bounce">🎂</div>
-            <h1 class="text-5xl md:text-6xl font-black gradient-text mb-6 leading-tight">HAPPY BIRTHDAY!</h1>
+        <div id="birthday-reveal" class="hidden birthday-card w-full">
+            <div class="text-6xl mb-4 animate-bounce">🎂</div>
+            <h1 class="text-4xl font-black gradient-text mb-4 leading-tight">HAPPY BIRTHDAY!</h1>
             
-            <div class="glass p-8 rounded-[2rem] border border-white/20 shadow-2xl relative overflow-hidden">
+            <div class="glass p-6 rounded-[2rem] border border-white/20 shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
-                <p class="text-2xl font-serif italic text-white leading-relaxed mb-6" style="font-family: 'Playfair Display', serif;">
+                <p class="text-xl font-serif italic text-white leading-relaxed mb-6" style="font-family: 'Playfair Display', serif;">
                     "To the one who makes every day feel like a celebration, I hope today is as beautiful as your heart."
                 </p>
-                <div class="flex justify-center gap-4 mb-4">
-                    <span class="text-3xl">💖</span>
-                    <span class="text-3xl">✨</span>
-                    <span class="text-3xl">👑</span>
+                <div class="flex justify-center gap-3 mb-4">
+                    <span class="text-2xl">💖</span>
+                    <span class="text-2xl">✨</span>
+                    <span class="text-2xl">👑</span>
                 </div>
-                <p class="text-purple-300 font-bold tracking-tighter uppercase text-sm">Forever Yours</p>
+                <p class="text-purple-300 font-bold tracking-widest uppercase text-[10px]">Forever Yours</p>
             </div>
             
-            <button onclick="fireConfetti()" class="mt-10 px-8 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full transition-all text-sm font-bold tracking-widest uppercase">
+            <button onclick="fireConfetti()" class="mt-8 px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full transition-all text-[10px] font-bold tracking-widest uppercase">
                 Celebrate More ✨
             </button>
         </div>
     </div>
 
-    <div id="gift-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/95 backdrop-blur-xl">
-        <div class="glass w-full max-sm p-10 rounded-[3rem] text-center border border-white/20 relative shadow-2xl">
-            <div class="text-7xl mb-6">💝</div>
-            <h3 id="modal-date" class="text-purple-400 font-bold uppercase tracking-widest text-sm mb-2">Today</h3>
-            <p id="modal-body" class="text-2xl font-semibold leading-relaxed text-white mb-8 italic family-dancing"></p>
-            <button onclick="closeModal()" class="w-full py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl font-black text-lg hover:scale-105 transition-transform">
+    <div id="gift-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+        <div class="glass w-full max-w-[320px] p-8 rounded-[2.5rem] text-center border border-white/20 relative shadow-2xl">
+            <div class="text-6xl mb-4">💝</div>
+            <h3 id="modal-date" class="text-purple-400 font-bold uppercase tracking-widest text-[10px] mb-2">Today</h3>
+            <p id="modal-body" class="text-lg font-semibold leading-relaxed text-white mb-8 italic" style="font-family: 'Dancing Script', cursive;"></p>
+            <button onclick="closeModal()" class="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl font-bold text-sm hover:scale-105 active:scale-95 transition-transform">
                 I Love You! ❤️
             </button>
         </div>
@@ -249,12 +247,12 @@
         const totalDuration = 26;
 
         const MINI_WISHES = [
-            "You're beautiful! ✨", "My Queen 👑", "Love you! ❤️", "You're special! 🌟", 
-            "Thinking of you... 💭", "My favorite person 😊", "Stay amazing! 🔥", 
-            "Pure magic! 🪄", "Keep smiling! 😄", "You're the best! 🏆", 
-            "My heart belongs to you! 💖", "So lucky to have you 🍀", "My everything 🌎",
-            "Simply stunning 💖", "You're my home 🏠", "Soulmates forever ∞",
-            "You make me happy! 😍", "My angel 👼", "Forever yours ♾️", "You're a dream ✨"
+            "Beautiful! ✨", "My Queen 👑", "Love you! ❤️", "Special! 🌟", 
+            "Thinking of you... 💭", "Favorite person 😊", "Stay amazing! 🔥", 
+            "Pure magic! 🪄", "Keep smiling! 😄", "The best! 🏆", 
+            "My heart! 💖", "So lucky 🍀", "My everything 🌎",
+            "Stunning 💖", "My home 🏠", "Soulmates ∞",
+            "Happy! 😍", "My angel 👼", "Forever yours ♾️", "A dream ✨"
         ];
 
         let clicksDone = 0;
@@ -275,27 +273,31 @@
             createBackgroundDecor();
 
             if (month === BIRTH_MONTH && day === BIRTH_DAY) {
-                showBirthdayReveal();
+                // Keep game mode for birthday too until won
             }
         }
 
         function createBackgroundDecor() {
             const container = document.getElementById('background-elements');
-            for(let i=0; i<6; i++) {
+            const butterflyCount = window.innerWidth < 600 ? 4 : 6;
+            
+            for(let i=0; i<butterflyCount; i++) {
                 const b = document.createElement('div');
                 b.className = 'butterfly';
                 b.innerHTML = '🦋';
-                b.style.left = Math.random() * 90 + 'vw';
-                b.style.top = Math.random() * 90 + 'vh';
-                b.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                b.style.left = Math.random() * 80 + 'vw';
+                b.style.top = Math.random() * 80 + 'vh';
+                b.style.fontSize = (Math.random() * 10 + 15) + 'px';
                 b.style.setProperty('--dur', (Math.random() * 10 + 10) + 's');
                 container.appendChild(b);
             }
-            for(let i=0; i<8; i++) {
+            
+            const giftCount = window.innerWidth < 600 ? 5 : 8;
+            for(let i=0; i<giftCount; i++) {
                 const g = document.createElement('div');
                 g.className = 'drifting-gift';
                 g.innerHTML = ['🎁', '💝', '✨', '🎈'][Math.floor(Math.random() * 4)];
-                g.style.left = Math.random() * 100 + 'vw';
+                g.style.left = Math.random() * 90 + 'vw';
                 g.style.setProperty('--dur', (Math.random() * 15 + 15) + 's');
                 g.style.animationDelay = (Math.random() * 10) + 's';
                 container.appendChild(g);
@@ -315,7 +317,7 @@
             const interval = setInterval(function() {
                 const timeLeft = animationEnd - Date.now();
                 if (timeLeft <= 0) return clearInterval(interval);
-                const particleCount = 50 * (timeLeft / duration);
+                const particleCount = 40 * (timeLeft / duration);
                 confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
                 confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
             }, 250);
@@ -332,30 +334,34 @@
             visual.classList.add('shake-box');
             setTimeout(() => visual.classList.remove('shake-box'), 200);
 
-            // Hide UI elements to focus on the game
             if (clicksDone === 1) {
-                document.getElementById('tap-instruction').style.opacity = '0.2';
-                document.getElementById('sub-instruction').style.opacity = '0.2';
+                document.getElementById('tap-instruction').style.opacity = '0.3';
+                document.getElementById('sub-instruction').style.opacity = '0.3';
             }
 
             if (clicksDone >= requiredClicks) {
                 isOpened = true;
                 resetGiftPosition();
-                setTimeout(openGift, 600);
+                
+                const today = new Date();
+                if (today.getMonth() === BIRTH_MONTH && today.getDate() === BIRTH_DAY) {
+                    setTimeout(showBirthdayReveal, 600);
+                } else {
+                    setTimeout(openGift, 600);
+                }
             }
         }
 
         function moveGiftRandomly() {
             const gift = document.getElementById('movable-gift');
             
-            // Calculate boundaries (stay away from edges)
-            const margin = 100;
-            const maxX = window.innerWidth - margin * 2;
-            const maxY = window.innerHeight - margin * 2;
+            // Constrain movement to 70% of screen to keep box fully visible
+            const padding = 80;
+            const maxX = (window.innerWidth - padding * 2) / 2;
+            const maxY = (window.innerHeight - padding * 2) / 2;
             
-            // Get random position relative to screen center
-            const randomX = (Math.random() - 0.5) * maxX;
-            const randomY = (Math.random() - 0.5) * maxY;
+            const randomX = (Math.random() - 0.5) * (maxX * 2);
+            const randomY = (Math.random() - 0.5) * (maxY * 2);
             
             gift.style.transform = `translate(${randomX}px, ${randomY}px)`;
         }
@@ -372,12 +378,15 @@
             const wish = document.createElement('div');
             wish.className = 'floating-wish';
             wish.innerText = MINI_WISHES[Math.floor(Math.random() * MINI_WISHES.length)];
-            wish.style.left = (Math.random() * 80 + 10) + '%';
-            wish.style.top = (Math.random() * 80 + 10) + '%';
+            
+            // Keep wishes away from center where gift is jumping
+            wish.style.left = (Math.random() * 70 + 15) + '%';
+            wish.style.top = (Math.random() * 70 + 15) + '%';
+            
             const rotation = (Math.random() - 0.5) * 40;
             wish.style.setProperty('--rot', rotation + 'deg');
             layer.appendChild(wish);
-            setTimeout(() => wish.remove(), 5000);
+            setTimeout(() => wish.remove(), 4000);
         }
 
         function openGift() {
@@ -385,11 +394,13 @@
             const day = today.getDate();
             const monthNames = ["January", "February", "March", "April", "May", "June"];
             document.getElementById('modal-date').innerText = `${monthNames[today.getMonth()]} ${day}${getOrdinal(day)}`;
+            
             const messages = {
                 1: "A month of surprises starts today! I can't wait to celebrate you. 💖",
                 10: "Ten days of countdown! You're the best thing that ever happened to me. 🌟",
                 25: "Tomorrow is the big day! Get some rest, my queen. 💤"
             };
+            
             document.getElementById('modal-body').innerText = messages[day] || "Every day is special because I have you. I love you more than words can say! ❤️";
             fireConfetti();
             document.getElementById('gift-modal').style.display = 'flex';
@@ -397,13 +408,12 @@
 
         function closeModal() {
             document.getElementById('gift-modal').style.display = 'none';
-            // Allow them to keep playing if they want (re-enable clicks)
             isOpened = false;
             clicksDone = 0;
         }
 
         function fireConfetti() {
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            confetti({ particleCount: 100, spread: 60, origin: { y: 0.7 } });
         }
 
         function getOrdinal(n) {
@@ -412,6 +422,8 @@
         }
 
         window.onload = init;
+        // Fix for mobile orientation changes
+        window.addEventListener('resize', resetGiftPosition);
     </script>
 </body>
 </html>
