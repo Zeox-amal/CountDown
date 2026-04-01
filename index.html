@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Countdown</title>
+    <style>
+        body {
+            background: #121212;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h1 { font-size: 2.5rem; margin-bottom: 20px; }
+        #timer {
+            display: flex;
+            gap: 20px;
+            font-size: 1.5rem;
+        }
+        .time-box {
+            background: #333;
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 80px;
+        }
+        .number { font-size: 2.5rem; display: block; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Birthday Countdown</h1>
+        <div id="timer">
+            <div class="time-box"><span id="days" class="number">00</span> Days</div>
+            <div class="time-box"><span id="hours" class="number">00</span> Hours</div>
+            <div class="time-box"><span id="minutes" class="number">00</span> Mins</div>
+            <div class="time-box"><span id="seconds" class="number">00</span> Secs</div>
+        </div>
+    </div>
+
+    <script>
+        // SET THE BIRTHDAY DATE HERE (Year, Month - 1, Day)
+        // Note: Months are 0-indexed (January is 0, December is 11)
+        const birthday = new Date(2026, 4, 15).getTime(); 
+
+        const countdown = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = birthday - now;
+
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerHTML = d;
+            document.getElementById("hours").innerHTML = h;
+            document.getElementById("minutes").innerHTML = m;
+            document.getElementById("seconds").innerHTML = s;
+
+            if (distance < 0) {
+                clearInterval(countdown);
+                document.querySelector(".container").innerHTML = "<h1>Happy Birthday! 🎂</h1>";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
