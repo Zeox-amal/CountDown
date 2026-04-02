@@ -30,7 +30,6 @@
             touch-action: manipulation;
         }
 
-        /* Animated Background Layer */
         .bg-animate {
             position: fixed;
             inset: 0;
@@ -38,107 +37,68 @@
             z-index: -2;
         }
 
-        /* Heart Shimmer Effect */
-        .bg-heart-shimmer {
-            position: fixed;
-            inset: 0;
+        /* Anime Character Styles */
+        .character-container {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            height: 140px;
+            margin: 0 auto;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding-bottom: 20px;
+        }
+
+        .character {
+            font-size: 55px;
+            position: absolute;
+            bottom: 0;
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            user-select: none;
+        }
+
+        #boy { left: 0%; transform: scaleX(1); }
+        #girl { right: 0%; transform: scaleX(-1); }
+
+        .meeting-heart {
+            position: absolute;
+            left: 50%;
+            top: 15%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 45px;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+        }
+
+        /* Bubble Styles */
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.15;
+            cursor: pointer;
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.2);
+            animation: float-up var(--dur) linear infinite;
+            z-index: 40;
+            user-select: none;
         }
 
-        .heart-shape {
-            width: 80vmax;
-            height: 80vmax;
-            background: radial-gradient(circle, var(--accent-pink) 0%, transparent 70%);
-            clip-path: path('M12 21.593c-5.63-5.54-12-10.997-12-16.593 0-3.866 3.134-7 7-7 2.108 0 4.002 0.923 5 2.382 0.998-1.459 2.892-2.382 5-2.382 3.866 0 7 3.134 7 7 0 5.596-6.37 11.053-12 16.593z');
-            transform-origin: center;
-            animation: heartPulse 8s infinite ease-in-out;
-        }
-
-        @keyframes heartPulse {
-            0%, 100% { transform: scale(1); opacity: 0.4; }
-            50% { transform: scale(1.2); opacity: 0.8; filter: blur(20px); }
-        }
-
-        /* Butterfly Styles */
-        .butterfly {
-            position: absolute;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.6;
-            animation: fly var(--dur) infinite ease-in-out;
-        }
-
-        @keyframes fly {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(50px, -25px) rotate(15deg); }
-            50% { transform: translate(100px, 0px) rotate(-10deg); }
-            75% { transform: translate(50px, 25px) rotate(5deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
-        }
-
-        /* Drifting Gifts */
-        .drifting-gift {
-            position: absolute;
-            font-size: 20px;
-            opacity: 0.2;
-            pointer-events: none;
-            animation: drift var(--dur) infinite linear;
-        }
-
-        @keyframes drift {
-            0% { transform: translateY(110vh) rotate(0deg); }
-            100% { transform: translateY(-10vh) rotate(3600deg); }
+        @keyframes float-up {
+            from { transform: translateY(110vh) translateX(var(--drift)); }
+            to { transform: translateY(-25vh) translateX(var(--drift-end)); }
         }
 
         .glass {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .gift-container {
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            user-select: none;
-            z-index: 50;
-            display: inline-block;
-            will-change: transform;
-        }
-
-        .gift-box {
-            font-size: clamp(70px, 18vw, 110px);
-            filter: drop-shadow(0 0 25px rgba(167, 139, 250, 0.4));
-            transition: transform 0.1s ease;
-        }
-
-        .gift-container:active .gift-box {
-            transform: scale(0.8);
-        }
-
-        @keyframes appear-wish {
-            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
-            15% { transform: scale(1.1) rotate(var(--rot)); opacity: 1; }
-            85% { transform: scale(1) rotate(var(--rot)); opacity: 1; }
-            100% { transform: scale(0.8) rotate(var(--rot)); opacity: 0; }
-        }
-
-        .floating-wish {
-            position: absolute;
-            pointer-events: none;
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.1rem;
-            white-space: nowrap;
-            color: var(--accent-pink);
-            text-shadow: 0 0 12px rgba(244, 114, 182, 0.7);
-            z-index: 5;
-            animation: appear-wish 4s ease-out forwards;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .gradient-text {
@@ -147,273 +107,258 @@
             -webkit-text-fill-color: transparent;
         }
 
-        #gift-modal {
-            display: none;
+        @keyframes pop {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
         }
-
-        @keyframes shake {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-5deg); }
-            75% { transform: rotate(5deg); }
-        }
-        .shake-box {
-            animation: shake 0.2s ease-in-out infinite;
-        }
-
-        #wishes-layer {
-            position: fixed;
-            inset: 0;
+        .pop-effect {
+            position: absolute;
             pointer-events: none;
-            overflow: hidden;
-            z-index: 1;
+            border-radius: 50%;
+            border: 2px solid var(--accent-pink);
+            animation: pop 0.4s ease-out forwards;
+            z-index: 50;
         }
 
-        .birthday-card {
-            animation: slideUp 1s cubic-bezier(0.23, 1, 0.32, 1);
-        }
+        #gift-modal { display: none; }
 
-        @keyframes slideUp {
-            0% { transform: translateY(30px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
+        .path-line {
+            position: absolute;
+            bottom: 12px;
+            left: 20px;
+            right: 20px;
+            height: 3px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+        }
+        
+        .instruction-tag {
+            background: rgba(244, 114, 182, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            color: var(--accent-pink);
+            display: inline-block;
         }
     </style>
 </head>
 <body>
 
     <div class="bg-animate"></div>
-    <div class="bg-heart-shimmer">
-        <div class="heart-shape"></div>
-    </div>
-    <div id="background-elements"></div>
-    <div id="wishes-layer"></div>
+    <div id="bubbles-container"></div>
 
     <div id="main-container" class="text-center px-6 w-full max-w-md relative z-10">
-        <div id="date-header" class="mb-4">
-            <h2 id="today-date" class="text-sm font-bold text-purple-300 opacity-70 uppercase tracking-[0.2em]">Loading...</h2>
-        </div>
-
-        <div id="main-interaction">
-            <h1 id="tap-instruction" class="text-2xl md:text-3xl font-black mb-8 leading-tight transition-opacity duration-500">
-                Tap to open <br><span class="gradient-text italic">Your Surprise</span>
+        <div id="start-screen">
+            <div class="mb-4">
+                <span id="current-date-ui" class="instruction-tag">APRIL 1ST</span>
+            </div>
+            
+            <h1 class="text-2xl font-black mb-8 leading-tight">
+                Pop <span id="target-count" class="gradient-text">25</span> bubbles to bring <br>
+                <span class="gradient-text italic">Us Together</span>
             </h1>
 
-            <div id="gift-wrapper" class="relative py-12 flex justify-center items-center min-h-[300px]">
-                <div id="movable-gift" class="gift-container" onclick="handleTap(event)">
-                    <div id="gift-visual" class="gift-box">🎁</div>
-                </div>
+            <!-- Anime Characters Game UI -->
+            <div class="character-container mb-10">
+                <div class="path-line"></div>
+                <div id="meeting-heart" class="meeting-heart">💖</div>
+                <div id="boy" class="character">👦</div>
+                <div id="girl" class="character">👧</div>
             </div>
 
-            <p id="sub-instruction" class="text-sm text-gray-400 animate-pulse transition-opacity duration-500">Every tap fills the screen with love... ✨</p>
+            <div class="mb-6">
+                <p class="text-[11px] uppercase tracking-[0.2em] text-gray-400 font-bold">
+                    <span id="score-text" class="text-pink-400 text-lg">0</span> / <span id="goal-text">25</span> Popped
+                </p>
+            </div>
+            
+            <p id="sub-text" class="text-xs italic text-pink-300 opacity-60">Every pop closes the distance...</p>
         </div>
 
-        <div id="birthday-reveal" class="hidden birthday-card w-full">
-            <div class="text-6xl mb-4 animate-bounce">🎂</div>
-            <h1 class="text-4xl font-black gradient-text mb-4 leading-tight">HAPPY BIRTHDAY!</h1>
-            
-            <div class="glass p-6 rounded-[2rem] border border-white/20 shadow-2xl relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
-                <p class="text-xl font-serif italic text-white leading-relaxed mb-6" style="font-family: 'Playfair Display', serif;">
-                    "To the one who makes every day feel like a celebration, I hope today is as beautiful as your heart."
-                </p>
-                <div class="flex justify-center gap-3 mb-4">
-                    <span class="text-2xl">💖</span>
-                    <span class="text-2xl">✨</span>
-                    <span class="text-2xl">👑</span>
-                </div>
-                <p class="text-purple-300 font-bold tracking-widest uppercase text-[10px]">Forever Yours</p>
+        <!-- Birthday Reveal (April 26 Only) -->
+        <div id="birthday-reveal" class="hidden w-full">
+            <div class="text-7xl mb-6 animate-bounce">🎂</div>
+            <h1 class="text-4xl font-black gradient-text mb-6">HAPPY BIRTHDAY!</h1>
+            <div class="glass p-8 rounded-[2.5rem] border border-white/20 shadow-2xl">
+                <p class="text-xl font-serif italic text-white mb-6">"To my favorite person, may today be as incredible as you are."</p>
+                <p class="text-purple-300 font-bold tracking-widest uppercase text-xs">I Love You Forever</p>
             </div>
-            
-            <button onclick="fireConfetti()" class="mt-8 px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full transition-all text-[10px] font-bold tracking-widest uppercase">
-                Celebrate More ✨
-            </button>
         </div>
     </div>
 
-    <div id="gift-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
-        <div class="glass w-full max-w-[320px] p-8 rounded-[2.5rem] text-center border border-white/20 relative shadow-2xl">
-            <div class="text-6xl mb-4">💝</div>
-            <h3 id="modal-date" class="text-purple-400 font-bold uppercase tracking-widest text-[10px] mb-2">Today</h3>
-            <p id="modal-body" class="text-lg font-semibold leading-relaxed text-white mb-8 italic" style="font-family: 'Dancing Script', cursive;"></p>
-            <button onclick="closeModal()" class="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl font-bold text-sm hover:scale-105 active:scale-95 transition-transform">
-                I Love You! ❤️
+    <!-- The Countdown Card -->
+    <div id="gift-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl">
+        <div class="glass w-full max-w-[340px] p-10 rounded-[3rem] text-center border border-white/20 relative shadow-2xl">
+            <div class="text-6xl mb-4">💑</div>
+            <h3 id="modal-date" class="text-purple-400 font-bold uppercase tracking-widest text-[10px] mb-2">April 1st</h3>
+            
+            <div class="mb-6">
+                <span id="days-remaining" class="text-7xl font-black gradient-text">25</span>
+                <p class="text-xs text-gray-400 uppercase tracking-[0.2em] mt-2">Days Until April 26th</p>
+            </div>
+
+            <div class="mb-8 border-t border-white/10 pt-6">
+                <p id="quote-body" class="text-xl font-semibold leading-relaxed text-white italic" style="font-family: 'Dancing Script', cursive;"></p>
+            </div>
+
+            <button onclick="location.reload()" class="w-full py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl font-bold text-sm text-white shadow-lg shadow-pink-500/20 active:scale-95 transition-transform">
+                I'll be back tomorrow! ❤️
             </button>
         </div>
     </div>
 
     <script>
-        const BIRTH_MONTH = 3; 
-        const BIRTH_DAY = 26;
-        const START_DATE = new Date(2026, 3, 1);
-        const totalDuration = 26;
-
-        const MINI_WISHES = [
-            "Beautiful! ✨", "My Queen 👑", "Love you! ❤️", "Special! 🌟", 
-            "Thinking of you... 💭", "Favorite person 😊", "Stay amazing! 🔥", 
-            "Pure magic! 🪄", "Keep smiling! 😄", "The best! 🏆", 
-            "My heart! 💖", "So lucky 🍀", "My everything 🌎",
-            "Stunning 💖", "My home 🏠", "Soulmates ∞",
-            "Happy! 😍", "My angel 👼", "Forever yours ♾️", "A dream ✨"
+        const BIRTHDAY_DAY = 26;
+        const QUOTES = [
+            "Every day is a countdown to loving you more.",
+            "You're the best gift I've ever received.",
+            "I can't wait to celebrate you, my love.",
+            "The world became brighter when you were born.",
+            "Counting down to your special day!",
+            "You deserve all the happiness in the world.",
+            "My heart beats faster as your birthday gets closer.",
+            "You are my favorite reason to celebrate.",
+            "Distance means nothing when someone means everything.",
+            "I'm so lucky to have you by my side."
         ];
 
-        let clicksDone = 0;
-        let requiredClicks = 0;
-        let isOpened = false;
+        let score = 0;
+        let goal = 25; // Default for April 1st
+        let gameActive = true;
 
         function init() {
             const today = new Date();
             const day = today.getDate();
-            const month = today.getMonth();
             const monthNames = ["January", "February", "March", "April", "May", "June"];
             
-            document.getElementById('today-date').innerText = `${monthNames[month]} ${day}${getOrdinal(day)}`;
-
-            const diffFromStart = Math.floor((today - START_DATE) / (1000 * 60 * 60 * 24));
-            requiredClicks = Math.max(1, totalDuration - diffFromStart);
-
-            createBackgroundDecor();
-
-            if (month === BIRTH_MONTH && day === BIRTH_DAY) {
-                // Keep game mode for birthday too until won
-            }
-        }
-
-        function createBackgroundDecor() {
-            const container = document.getElementById('background-elements');
-            const butterflyCount = window.innerWidth < 600 ? 4 : 6;
+            // Set goal based on days remaining (26 - current day)
+            goal = Math.max(1, BIRTHDAY_DAY - day);
             
-            for(let i=0; i<butterflyCount; i++) {
-                const b = document.createElement('div');
-                b.className = 'butterfly';
-                b.innerHTML = '🦋';
-                b.style.left = Math.random() * 80 + 'vw';
-                b.style.top = Math.random() * 80 + 'vh';
-                b.style.fontSize = (Math.random() * 10 + 15) + 'px';
-                b.style.setProperty('--dur', (Math.random() * 10 + 10) + 's');
-                container.appendChild(b);
-            }
-            
-            const giftCount = window.innerWidth < 600 ? 5 : 8;
-            for(let i=0; i<giftCount; i++) {
-                const g = document.createElement('div');
-                g.className = 'drifting-gift';
-                g.innerHTML = ['🎁', '💝', '✨', '🎈'][Math.floor(Math.random() * 4)];
-                g.style.left = Math.random() * 90 + 'vw';
-                g.style.setProperty('--dur', (Math.random() * 15 + 15) + 's');
-                g.style.animationDelay = (Math.random() * 10) + 's';
-                container.appendChild(g);
-            }
-        }
-
-        function showBirthdayReveal() {
-            document.getElementById('main-interaction').classList.add('hidden');
-            document.getElementById('date-header').classList.add('hidden');
-            document.getElementById('birthday-reveal').classList.remove('hidden');
-            
-            const duration = 15 * 1000;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-            const randomInRange = (min, max) => Math.random() * (max - min) + min;
-
-            const interval = setInterval(function() {
-                const timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) return clearInterval(interval);
-                const particleCount = 40 * (timeLeft / duration);
-                confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
-                confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
-            }, 250);
-        }
-
-        function handleTap(event) {
-            if (isOpened) return;
-            
-            clicksDone++;
-            spawnRandomWish();
-            moveGiftRandomly();
-
-            const visual = document.getElementById('gift-visual');
-            visual.classList.add('shake-box');
-            setTimeout(() => visual.classList.remove('shake-box'), 200);
-
-            if (clicksDone === 1) {
-                document.getElementById('tap-instruction').style.opacity = '0.3';
-                document.getElementById('sub-instruction').style.opacity = '0.3';
-            }
-
-            if (clicksDone >= requiredClicks) {
-                isOpened = true;
-                resetGiftPosition();
-                
-                const today = new Date();
-                if (today.getMonth() === BIRTH_MONTH && today.getDate() === BIRTH_DAY) {
-                    setTimeout(showBirthdayReveal, 600);
-                } else {
-                    setTimeout(openGift, 600);
-                }
-            }
-        }
-
-        function moveGiftRandomly() {
-            const gift = document.getElementById('movable-gift');
-            
-            // Constrain movement to 70% of screen to keep box fully visible
-            const padding = 80;
-            const maxX = (window.innerWidth - padding * 2) / 2;
-            const maxY = (window.innerHeight - padding * 2) / 2;
-            
-            const randomX = (Math.random() - 0.5) * (maxX * 2);
-            const randomY = (Math.random() - 0.5) * (maxY * 2);
-            
-            gift.style.transform = `translate(${randomX}px, ${randomY}px)`;
-        }
-
-        function resetGiftPosition() {
-            const gift = document.getElementById('movable-gift');
-            gift.style.transform = `translate(0, 0)`;
-            document.getElementById('tap-instruction').style.opacity = '1';
-            document.getElementById('sub-instruction').style.opacity = '1';
-        }
-
-        function spawnRandomWish() {
-            const layer = document.getElementById('wishes-layer');
-            const wish = document.createElement('div');
-            wish.className = 'floating-wish';
-            wish.innerText = MINI_WISHES[Math.floor(Math.random() * MINI_WISHES.length)];
-            
-            // Keep wishes away from center where gift is jumping
-            wish.style.left = (Math.random() * 70 + 15) + '%';
-            wish.style.top = (Math.random() * 70 + 15) + '%';
-            
-            const rotation = (Math.random() - 0.5) * 40;
-            wish.style.setProperty('--rot', rotation + 'deg');
-            layer.appendChild(wish);
-            setTimeout(() => wish.remove(), 4000);
-        }
-
-        function openGift() {
-            const today = new Date();
-            const day = today.getDate();
-            const monthNames = ["January", "February", "March", "April", "May", "June"];
+            document.getElementById('current-date-ui').innerText = `${monthNames[today.getMonth()]} ${day}${getOrdinal(day)}`.toUpperCase();
+            document.getElementById('target-count').innerText = goal;
+            document.getElementById('goal-text').innerText = goal;
             document.getElementById('modal-date').innerText = `${monthNames[today.getMonth()]} ${day}${getOrdinal(day)}`;
+
+            // Countdown Logic for Modal
+            document.getElementById('days-remaining').innerText = goal;
+
+            // Random Quote
+            document.getElementById('quote-body').innerText = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+
+            // Start Game Loop
+            setInterval(createBubble, 750);
+        }
+
+        function createBubble() {
+            if (!gameActive) return;
+
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
             
-            const messages = {
-                1: "A month of surprises starts today! I can't wait to celebrate you. 💖",
-                10: "Ten days of countdown! You're the best thing that ever happened to me. 🌟",
-                25: "Tomorrow is the big day! Get some rest, my queen. 💤"
+            const size = Math.random() * 25 + 50; // slightly larger for easier tapping
+            bubble.style.width = size + 'px';
+            bubble.style.height = size + 'px';
+            bubble.style.left = Math.random() * 85 + 'vw';
+            
+            const emojis = ['❤️', '✨', '🎈', '💖', '🎁', '🌸', '🍭', '🦋'];
+            bubble.innerHTML = `<span style="font-size: ${size/2}px">${emojis[Math.floor(Math.random() * emojis.length)]}</span>`;
+            
+            bubble.style.setProperty('--dur', (Math.random() * 2 + 3.5) + 's');
+            bubble.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
+            bubble.style.setProperty('--drift-end', (Math.random() * 120 - 60) + 'px');
+
+            // Support for both mouse and touch
+            bubble.onmousedown = (e) => popBubble(e, bubble);
+            bubble.ontouchstart = (e) => {
+                e.preventDefault();
+                popBubble(e.touches[0], bubble);
             };
             
-            document.getElementById('modal-body').innerText = messages[day] || "Every day is special because I have you. I love you more than words can say! ❤️";
-            fireConfetti();
-            document.getElementById('gift-modal').style.display = 'flex';
+            document.getElementById('bubbles-container').appendChild(bubble);
+            setTimeout(() => bubble.remove(), 6000);
         }
 
-        function closeModal() {
-            document.getElementById('gift-modal').style.display = 'none';
-            isOpened = false;
-            clicksDone = 0;
+        function popBubble(e, element) {
+            if (!gameActive) return;
+
+            // Visual Pop Effect
+            const pop = document.createElement('div');
+            pop.className = 'pop-effect';
+            pop.style.left = (e.clientX || e.pageX) + 'px';
+            pop.style.top = (e.clientY || e.pageY) + 'px';
+            pop.style.width = element.style.width;
+            pop.style.height = element.style.height;
+            pop.style.transform = 'translate(-50%, -50%)';
+            document.body.appendChild(pop);
+            setTimeout(() => pop.remove(), 400);
+
+            element.remove();
+            score++;
+            
+            updateCharacters();
+
+            if (score >= goal) {
+                gameActive = false;
+                finishGame();
+            }
+        }
+
+        function updateCharacters() {
+            const boy = document.getElementById('boy');
+            const girl = document.getElementById('girl');
+            const scoreText = document.getElementById('score-text');
+            
+            // Move characters closer based on dynamic goal
+            // They meet at roughly 41% from each side
+            const progress = (score / goal) * 41;
+            boy.style.left = progress + '%';
+            girl.style.right = progress + '%';
+            
+            scoreText.innerText = score;
+        }
+
+        function finishGame() {
+            const boy = document.getElementById('boy');
+            const girl = document.getElementById('girl');
+            const heart = document.getElementById('meeting-heart');
+            
+            // Final snap together
+            boy.style.left = '41%';
+            girl.style.right = '41%';
+            
+            setTimeout(() => {
+                heart.style.transform = 'translate(-50%, -50%) scale(1.6)';
+                fireConfetti();
+            }, 350);
+
+            const today = new Date();
+            // If it is April 26th
+            if (today.getDate() === BIRTHDAY_DAY && today.getMonth() === 3) {
+                setTimeout(() => {
+                    document.getElementById('start-screen').classList.add('hidden');
+                    document.getElementById('birthday-reveal').classList.remove('hidden');
+                }, 1300);
+            } else {
+                setTimeout(() => {
+                    document.getElementById('gift-modal').style.display = 'flex';
+                }, 1300);
+            }
         }
 
         function fireConfetti() {
-            confetti({ particleCount: 100, spread: 60, origin: { y: 0.7 } });
+            const count = 200;
+            const defaults = { origin: { y: 0.7 }, zIndex: 1001 };
+
+            function fire(particleRatio, opts) {
+                confetti({ ...defaults, ...opts, particleCount: Math.floor(count * particleRatio) });
+            }
+
+            fire(0.25, { spread: 26, startVelocity: 55 });
+            fire(0.2, { spread: 60 });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
         }
 
         function getOrdinal(n) {
@@ -422,8 +367,6 @@
         }
 
         window.onload = init;
-        // Fix for mobile orientation changes
-        window.addEventListener('resize', resetGiftPosition);
     </script>
 </body>
 </html>
